@@ -1,0 +1,7 @@
+Cython==0.22
+argparse==1.2.1
+bottle==0.12.8
+docopt==0.6.2
+hdfs==0.3.1
+python-dateutil==2.4.0
+wsgiref==0.1.2

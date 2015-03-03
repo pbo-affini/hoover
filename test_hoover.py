@@ -1,3 +1,5 @@
+# ./venv/bin/py.test to launch all tests
+
 from hoover import *
 import pytest
 import mock
@@ -56,13 +58,12 @@ def test_add_header(hoover_header, hoover):
     assert hoover_header.header == ["firstheader","secondheader"]
     assert hoover_header.first_line == ["1","2"]
     
-    with mock.patch('__builtin__.raw_input', return_value='n'):
-        hoover.add_header(False)
-        assert hoover.header == ["field 0","field 1", "field 2", "field 3"]
+    hoover.add_header(False, False, True)
+    assert hoover.header == ["field 0","field 1", "field 2", "field 3"]
     assert hoover.first_line == ["t1","1","f1","1"]
     hoover.header = None
 
-    with mock.patch('__builtin__.raw_input', side_effect=["y","f0","f1","f2","f3"]):
+    with mock.patch('__builtin__.raw_input', side_effect=["f0","f1","f2","f3"]):
         hoover.add_header(False)
         assert hoover.header == ["f0","f1", "f2", "f3"]
     assert hoover.first_line == ["t1","1","f1","1"]
@@ -220,7 +221,6 @@ def test_apply_file_transformation_multiprocess(hoover_multi):
     os.remove("test_file/output.csv_0_error")
     os.remove("test_file/output.csv_2_error")
 
-
 def test_reassemblate_chunks(hoover_multi):
     hoover_multi.separate_into_chunks()
     hoover_multi.apply_file_transformation_multiprocess()
@@ -280,5 +280,3 @@ def test_write_with_header(hoover_complete):
         assert lines[1] == "2,2_test\n"
         assert lines[2] == "6,4_test\n"
     os.remove(hoover_complete.filetowrite)
-
-

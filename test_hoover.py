@@ -249,6 +249,52 @@ def test_reassemblate_chunks(hoover_multi):
     os.remove("test_file/output.csv")
     os.remove("test_file/output.csv_error")
 
+def test_launch_hoover(hoover_complete, hoover_multi):
+    #test in single process
+    hoover_complete.launch_hoover()
+    assert os.path.exists("test_file/output_with_header.csv")
+    assert not os.path.exists("test_file/output_with_header.csv_error")
+    with open("test_file/output_with_header.csv") as output_file:
+        lines = output_file.readlines()
+        assert len(lines) == 2
+        assert lines[0] == "2,2_test\n"
+        assert lines[1] == "6,4_test\n"
+    os.remove("test_file/output_with_header.csv")
+
+    #test in multi process
+    hoover_multi.launch_hoover()
+    assert not os.path.exists("test_file/input.csv_0")
+    assert not os.path.exists("test_file/output.csv_0")
+    assert not os.path.exists("test_file/output.csv_0_error")
+    assert os.path.exists("test_file/output.csv")
+    assert os.path.exists("test_file/output.csv_error")
+    with open("test_file/output.csv") as output_file:
+        lines = output_file.readlines()
+        assert len(lines) == 8
+        assert lines[0] == "t1test,2,f1,1\n"
+        assert lines[1] == "t2test,4,f2,2\n"
+        assert lines[2] == "t2test,8,f2,2\n"
+        assert lines[3] == "t2test,10,f2,2\n"
+        assert lines[4] == "t2test,12,f2,2\n"
+        assert lines[5] == "t2test,14,f2,2\n"
+        assert lines[6] == "t2test,16,f2,2\n"
+        assert lines[7] == "t2test,20,f2,2\n"
+    with open("test_file/output.csv_error") as error_file:
+        lines = error_file.readlines()
+        assert len(lines) == 2
+        assert lines[0] == "t2,a,f2,2\n"
+        assert lines[1] == "t2,c,f2,2\n"
+    os.remove("test_file/output.csv")
+    os.remove("test_file/output.csv_error")
+
+def test_write_infos(hoover_complete):
+    functions_dict = {"multiply()" : multiply}
+    hoover_complete.write_infos(True, True, True, True)
+    assert os.path.exists("test_file/input_with_header.csv_header")
+    assert os.path.exists("test_file/input_with_header.csv_first_line")
+    assert os.path.exists("test_file/input_with_header.csv_type_list")
+    assert os.path.exists("test_file/input_with_header.csv_transformation_code")
+
 def test_write_infos(hoover_complete):
     functions_dict = {"multiply()" : multiply}
     hoover_complete.write_infos(True, True, True, True)

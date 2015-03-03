@@ -50,7 +50,7 @@ class Hoover(object):
         self.filetowrite = filetowrite
         self.nb_process = nb_process
 
-    def add_header(self, file_has_header, header_file=False, basic_header=False):
+    def add_header(self, file_has_header=False, header_file=False, basic_header=False):
         """
         Add the headers to a hoover. It could come from the file, from another file, or from the user.
         It adds in the same time the first line of file.
@@ -272,7 +272,7 @@ class Hoover(object):
                         output_file.write(line)
                 os.remove(self.filetoclean + "_" + str(i))
                 os.remove(self.filetowrite + "_" + str(i))
-        #here we reaasemblate the error file, then we delete them
+        #here we reassemblate the error file, then we delete them
         error_exist = False
         with open(self.filetowrite + "_error", "w") as error_file:
             for i in range(0, self.nb_process):
@@ -284,6 +284,17 @@ class Hoover(object):
                     os.remove(self.filetowrite + "_" + str(i) + "_error")
         if not error_exist:
             os.remove(self.filetowrite + "_error")
+
+    def launch_hoover(self):
+        """
+        Launch the clean process
+        """
+        if self.nb_process == 1:
+            self.apply_file_transformation()
+        else:
+            self.separate_into_chunks()
+            self.apply_file_transformation_multiprocess()
+            self.reassemblate_chunks()
    
     def write_infos(self, header, first_line, type_list, transformation_list):
         """

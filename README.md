@@ -1,18 +1,18 @@
 # hoover
 
-Hoover is a python library allowing to clan a *sv file, field by field. Just give the file to clean, add header,
+Hoover is a python library allowing to clean a *sv file, field by field. Just give the file to clean, add header,
 type of datas, transformations to apply to each field, and launch it ! Hoover can work in single process, or in multiprocess.
 
 # Basic usage
 
 <pre>from hoover import *
 
- h = Hoover(file_to_clean, separator, filetowrite, nb_process)
-  h.add_header()
-   h.add_type()
-    h.add_transformation()
-     h.launch_hoover()
-     </pre>
+h = Hoover(file_to_clean, separator, filetowrite, nb_process)
+h.add_header()
+h.add_type()
+h.add_transformation()
+h.launch_hoover()
+</pre>
 
 # Contribute
 

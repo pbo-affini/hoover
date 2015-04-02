@@ -24,3 +24,5 @@ Some ameliorations can be done, I will try to do them:
 - add the support of date, with easy transformation (using arrow for example)
 - use cython to make the process faster
 - use bash function to manipulate file (remove the first line, concatenate...)
+- use a config file in json instead of using several files
+- watch if the use of task master can help (see http://sametmax.com/travail-distribue-en-python-sans-celey/)
